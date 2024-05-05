@@ -133,56 +133,8 @@ class _LoginPage extends State<LoginPage> {
                               ),
                               padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),
                             ),
-                            onPressed: () async {
-                              try {
-                                final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
-                                );
-
-                                if (userCredential.user != null) {
-                                  // Получаем UID аутентифицированного пользователя
-                                  final uid = userCredential.user!.uid;
-
-                                  // Получаем документ пользователя из коллекции 'choices' в Firestore
-                                  final docSnapshot = await FirebaseFirestore.instance.collection('choices').doc(uid).get();
-                                  final docSnapshot2 = await FirebaseFirestore.instance.collection('jobSearchers').doc(uid).get();
-
-                                  // Проверяем, содержит ли документ информацию о выборе пользователя
-                                  if (docSnapshot.exists && docSnapshot.data()!.containsKey('choice')) {
-                                    final choice = docSnapshot.data()!['choice'];
-
-                                    // Перенаправляем пользователя в зависимости от его выбора
-                                    if (choice == 'ищу работу' && docSnapshot2.exists && docSnapshot2.data()!.containsKey('employerId')) {
-                                      print('попал');
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => TinderPage()),
-                                            (_) => false,
-                                      );
-                                      // Перенаправление на страницу поиска работы
-                                    }
-                                    else if (choice == 'ищу работу') {
-                                      Navigator.pushNamed(context, '/search'); // Перенаправление на страницу с вакансиями
-                                    }
-                                    else if (choice == 'есть вакансии') {
-                                      Navigator.pushNamed(context, '/empl_list'); // Перенаправление на страницу с вакансиями
-                                    }
-                                    else {
-                                      // Если не удалось определить выбор, перенаправляем на страницу по умолчанию
-                                      Navigator.pushNamed(context, '/choice');
-                                    }
-                                  } else {
-                                    // Если в документе нет информации о выборе, перенаправляем на страницу по умолчанию
-                                    Navigator.pushNamed(context, '/choice');
-                                  }
-                                } else {
-                                  print('Аутентификация не удалась.');
-                                }
-                              }  catch (e) {
-                                // Обработка других ошибок...
-                              }
-                            },child:  Align(
+                            onPressed: _login,
+                            child:  Align(
                             alignment: Alignment.center,
                             child: Text(
                               'ВОЙТИ',
@@ -203,6 +155,99 @@ class _LoginPage extends State<LoginPage> {
         ),
       ),
     );
+  }
+  Future<void> _login() async {
+    try {
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (userCredential.user != null) {
+        // Получаем UID аутентифицированного пользователя
+        final uid = userCredential.user!.uid;
+
+        // Получаем документ пользователя из коллекции 'choices' в Firestore
+        final docSnapshot = await FirebaseFirestore.instance.collection('choices').doc(uid).get();
+        final docSnapshot2 = await FirebaseFirestore.instance.collection('jobSearches').doc(uid).get();
+
+        // Проверяем, содержит ли документ информацию о выборе пользователя
+        if (docSnapshot.exists && docSnapshot.data()!.containsKey('choice')) {
+          final choice = docSnapshot.data()!['choice'];
+
+          // Перенаправляем пользователя в зависимости от его выбора
+          if (choice == 'ищу работу' && docSnapshot2.exists && docSnapshot2.data()!.containsKey('employerId')) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => TinderPage()),
+                  (_) => false,
+            );
+            // Перенаправление на страницу поиска работы
+          }
+          else if (choice == 'ищу работу') {
+            Navigator.pushNamed(context, '/search'); // Перенаправление на страницу с вакансиями
+          }
+          else if (choice == 'есть вакансии') {
+            Navigator.pushNamed(context, '/empl_list'); // Перенаправление на страницу с вакансиями
+          }
+          else {
+            // Если не удало  сь определить выбор, перенаправляем на страницу по умолчанию
+            Navigator.pushNamed(context, '/choice');
+          }
+        } else {
+          // Если в документе нет информации о выборе, перенаправляем на страницу по умолчанию
+          Navigator.pushNamed(context, '/choice');
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Аутентификация не удалась.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'Произошла ошибка. Пожалуйста, попробуйте ещё раз.';
+
+      switch (e.code) {
+        case 'invalid-email':
+          errorMessage = 'Некорректный адрес электронной почты.';
+          break;
+        case 'user-disabled':
+          errorMessage = 'Пользователь был отключен.';
+          break;
+        case 'user-not-found':
+          errorMessage = 'Пользователь не найден.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Неправильный пароль.';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'Учетные данные неверны. Пожалуйста, проверьте и попробуйте снова.';
+          break;
+        case 'network-request-failed':
+          errorMessage = 'Проблема сетевого соединения. Проверьте ваше интернет-соединение.';
+          break;
+        default:
+          print('Необработанная ошибка: ${e.code}');
+          break;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      print('Ошибка: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Непредвиденная ошибка. Пожалуйста, попробуйте ещё раз.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
   Widget _buildEmailField(TextEditingController controller,  bool obscureText, double Hpadding, double Vpadding) {
     Size screenSize = MediaQuery.of(context).size;

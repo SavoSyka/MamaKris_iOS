@@ -2,28 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.86099763542-lct4h3lht6g3f8r024104lnop1vqhdo2</string>
-            </array>
-        </dict>
-    </array>
-    <key>GoogleAppID</key>
-    <string>1:86099763542:ios:935986abf5d903f853f6f7</string>
-    <key>GIDClientID</key>
-    <string>86099763542-lct4h3lht6g3f8r024104lnop1vqhdo2.apps.googleusercontent.com</string>
-    <key>GIDSignInScopes</key>
-    <array>
-        <string>email</string>
-    </array>
-
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+                    <string>com.googleusercontent.apps.860997635421§</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.86099763542-lct4h3lht6g3f8r024104lnop1vqhdo2</string>
+			</array>
+		</dict>
+	</array>
+	<key>GoogleAppID</key>
+	<string>1:86099763542:ios:935986abf5d903f853f6f7</string>
+	<key>GIDClientID</key>
+	<string>86099763542-lct4h3lht6g3f8r024104lnop1vqhdo2.apps.googleusercontent.com</string>
+	<key>GIDSignInScopes</key>
+	<array>
+		<string>email</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+    	<string>tinkoffbank</string>
+    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

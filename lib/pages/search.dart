@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:MamaKris/pages/thx_ee.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,16 +7,133 @@ import 'package:MamaKris/wave.dart';
 import 'package:MamaKris/pages/tinder.dart';
 
 class JobSearchPage extends StatefulWidget {
+  final Map<String, dynamic>? jobSearchData;
+
+  JobSearchPage({this.jobSearchData});
+
   @override
   _JobSearchPageState createState() => _JobSearchPageState();
 }
 
 class _JobSearchPageState extends State<JobSearchPage> {
+
   final CollectionReference collection = FirebaseFirestore.instance.collection('jobSearches');
   final _formKey = GlobalKey<FormState>();
   bool _openToPermanent = false;
   bool _openToTemporary = false;
-  String _sphere = 'Пока не знаю, первый раз смотрю в мир онлайн-заработка';
+  String _sphere = 'Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка.';
+  final TextEditingController _phoneController = TextEditingController();
+  int _viewedAdsCount = 0;
+  bool _hasSubscription = true;//TODO: после добавления оплатьы поменять на false
+
+  @override
+  void initState() {
+    super.initState();
+    print("Предоставленные данные: ${widget.jobSearchData}");
+
+    // Заполнение полей, если данные уже существуют
+    if (widget.jobSearchData != null) {
+      _openToPermanent = widget.jobSearchData!['openToPermanent'] ?? false;
+      _openToTemporary = widget.jobSearchData!['openToTemporary'] ?? false;
+      _sphere = widget.jobSearchData!['sphere'] ?? _sphere;
+      _phoneController.text = widget.jobSearchData!['phone'] ?? '';
+      _viewedAdsCount = widget.jobSearchData!['viewedAdsCount'] ?? 0;
+      _hasSubscription = widget.jobSearchData!['hasSubscription'] ?? true;//TODO: после добавления оплатьы поменять на false
+    }
+  }
+
+  void _saveJobSearch() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // Получаем текущего пользователя
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Ошибка: Пользователь не найден')),
+        );
+        return;
+      }
+
+      // Создаем данные для сохранения
+      Map<String, dynamic> jobSearchData = {
+        'openToPermanent': _openToPermanent,
+        'openToTemporary': _openToTemporary,
+        'sphere': _sphere,
+        'employerId': user.uid,
+        'viewedAdsCount': _viewedAdsCount,
+        'hasSubscription': _hasSubscription,
+        'phone': _phoneController.text,
+      };
+
+      try {
+        // Если данные уже существуют, обновляем
+        if (widget.jobSearchData != null && widget.jobSearchData!.containsKey('id')) {
+          await collection.doc(widget.jobSearchData!['id']).update(jobSearchData);
+        } else {
+          // Создаем новую запись
+          await collection.doc(user.uid).set(jobSearchData, SetOptions(merge: true));
+        }
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ThxPage()),
+              (_) => false,
+        );
+      } catch (e, stackTrace) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Произошла ошибка при сохранении')));
+        print("Ошибка при сохранении данных: $e");
+        print("Stack trace: $stackTrace");
+      }
+    }
+  }
+
+  //
+  //
+  //     // Получение текущего идентификатора пользователя
+  //     String? userId = FirebaseAuth.instance.currentUser?.uid;
+  //
+  //     if (userId == null) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Ошибка: Пользователь не найден')),
+  //       );
+  //       return;
+  //     }
+  //
+  //     // Создание данных для сохранения
+  //     Map<String, dynamic> jobSearchData = {
+  //       'openToPermanent': _openToPermanent,
+  //       'openToTemporary': _openToTemporary,
+  //       'sphere': _sphere,
+  //       'employerId': userId,
+  //       'viewedAdsCount': _viewedAdsCount,
+  //       'hasSubscription': _hasSubscription,
+  //       'phone': _phoneController.text,
+  //     };
+  //
+  //     try {
+  //       // Проверка на существование данных в `widget.jobSearchData`
+  //       if (widget.jobSearchData != null && widget.jobSearchData!.containsKey('id')) {
+  //         // Обновить существующую запись по её идентификатору
+  //         await collection.doc(widget.jobSearchData!['id']).update(jobSearchData);
+  //       } else {
+  //         // Создать новую запись для текущего пользователя
+  //         await collection.doc(userId).set(jobSearchData, SetOptions(merge: true));
+  //       }
+  //
+  //       Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => ThxPage()),
+  //             (_) => false,
+  //       );
+  //     } catch (e) {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Произошла ошибка при сохранении')));
+  //       print(e);
+  //     }
+  //   }
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +251,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
             ),
               _buildDropdownField(
                   _sphere,
-                  ["Пока не знаю, первый раз смотрю в мир онлайн-заработка",
+                  ["Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка.",
                     "Дизайн",
                     "Разработка и IT",
                     "Тексты и переводы",
@@ -143,10 +260,14 @@ class _JobSearchPageState extends State<JobSearchPage> {
                     "SEO и трафик",
                     "SMM: Социальные сети, блоги, реклама",
                     "Продажи, HR, рекрутинг",
+                    "Продюсирование",
+                    "Криптовалюты, блокчейн",
                     "Маркетинг",
+                    "Маркетплейсы",
                     "Менеджмент",
                     "Методология",
                     "Модератор, тестировщик",
+                    "Нейросети",
                     "Психология, коучинг, кураторство",
                     "Административные задачи",
                     "Творческие и креативные задачи",
@@ -163,7 +284,19 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   },
                   (286+128)*VerticalMultiply, 32*HorizontalMultiply
               ),
-          Padding(
+            Padding(
+              padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: (350+128)*VerticalMultiply, right:0, bottom:0), // Общий отступ для группы текстов
+              child:  Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Номер телефона',
+                  style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w600, color: const Color(0xFF343434), height: 1,),
+                ),
+              ),
+            ),
+            _buildTextField(_phoneController, 'Телефон', false, (371+128)*VerticalMultiply, 32*HorizontalMultiply, 295*HorizontalMultiply, 60*VerticalMultiply, 1, 15),
+
+            Padding(
             padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 708*VerticalMultiply, right: 32*HorizontalMultiply, bottom:32*VerticalMultiply), // Общий отступ для группы текстов
             child: Container(
               decoration: BoxDecoration(
@@ -184,26 +317,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   minimumSize: Size(double.infinity, 60*VerticalMultiply), // Растягиваем кнопку на всю ширину с высотой 60
                   padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),
                 ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        User? user = FirebaseAuth.instance.currentUser;
-                        if (user != null) {
-                          await collection.doc(user.uid).set({
-                            'openToPermanent': _openToPermanent,
-                            'openToTemporary': _openToTemporary,
-                            'sphere': _sphere,
-                            'employerId': user.uid,
-                            'viewedAdsCount': 0,
-                            'hasSubscription': true, // TODO: после добавления оплаты сменитть на false
-                          },  SetOptions(merge: true));
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => TinderPage()), // Замените SubscribePage() на страницу, на которую хотите перейти
-                                (_) => false,
-                          );                        }
-                      }
-                    },
+                    onPressed: _saveJobSearch,
                       child:  Text('РАЗМЕСТИТЬ',
                           style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700)
                       ),
@@ -276,4 +390,56 @@ class _JobSearchPageState extends State<JobSearchPage> {
     ),
     );
   }
+
+
+  Widget _buildTextField(TextEditingController controller, String label, bool obscureText, double Vpadding, double Hpadding, double wdth, double hght, int maxLines, int maxLength) {
+    Size screenSize = MediaQuery.of(context).size;
+    double width = screenSize.width;
+    double height = screenSize.height;
+    double TextMultiply = min(width/360, height/800);
+    return Padding(
+      padding:  EdgeInsets.only(top: Vpadding, right: Hpadding, left: Hpadding),
+      child: Container(
+        constraints: BoxConstraints(
+          minWidth: wdth, // Минимальная ширина
+          maxWidth: wdth, // Максимальная ширина
+          minHeight: hght,
+          maxHeight: hght,
+        ),
+        width: wdth, // Фиксированная ширина
+        height: hght, // Фиксированная высота
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          maxLines: maxLines, // Разрешить перенос текста на следующую строку
+          maxLength: maxLength,
+          keyboardType: TextInputType.multiline, // Установить тип клавиатуры для многострочного ввода
+          decoration: InputDecoration(
+            counterText: '',
+            contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 32.0), // Уменьшенные отступы
+            floatingLabelBehavior: FloatingLabelBehavior.always, // Лейбл всегда над полем
+            labelStyle: const TextStyle(color: Color(0xFF343434)), // Цвет лейбла
+            // Устанавливаем толстую рамку
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12*TextMultiply),
+              borderSide: const BorderSide(color:Color(0xFF343434), width: 2.0), // Увеличиваем ширину рамки
+            ),
+            // Также применяем стиль рамки когда поле в фокусе
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12*TextMultiply),
+              borderSide: const BorderSide(color: Color(0xFF343434), width: 2.0), // Та же толщина рамки
+            ),
+            // Стиль рамки при вводе неверных данных
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12*TextMultiply),
+              borderSide: const BorderSide(color: Colors.red, width: 2.0), // Можно изменить цвет/толщину для ошибок
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 }
+
+

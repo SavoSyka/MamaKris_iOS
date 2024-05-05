@@ -239,7 +239,9 @@ class _SupportPageState extends State<SupportPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF0ECD3),
 
-        title: const Text(''),
+        title: const Text('Поддержка',
+          style: TextStyle(fontSize: 25, fontFamily: 'Inter', fontWeight: FontWeight.w800, color: Color(0xFF343434)),
+        ),
       ),
       backgroundColor: const Color(0xFFF0ECD3),
 

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:MamaKris/pages/conf.dart';
+import 'package:MamaKris/payments.dart';
 
 
 
@@ -85,12 +86,19 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               padding:  EdgeInsets.only(left: 30*HorizontalMultiply, top: 383*VerticalMultiply, right:30*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
               child:  Align(
                 alignment: Alignment.center,
-                child: Text(
-                'Тебе откроется доступ к банку\nсамых лучших онлайн вакансий\nи заданий. С помощью приложения\nMamaKris ты легко найдёшь работу\nсвоей мечты в онлайне',
-                  style: TextStyle(fontSize: 15*TextMultiply, fontFamily: 'Inter1', fontWeight: FontWeight.w600, color: const Color(0xFF343434),),
+                child: RichText(
                   textAlign: TextAlign.center,
-                ),
-            ),
+                  text: TextSpan(
+                    style: TextStyle(fontSize: 16 * TextMultiply, fontFamily: 'Inter1', fontWeight: FontWeight.w500, color: const Color(0xFF343434)), // Основной стиль текста
+                    children: <TextSpan>[
+                      TextSpan(text: 'Тебе откроется '), // Начало текста
+                      TextSpan(text: 'полный', style: TextStyle(fontWeight: FontWeight.w700, fontFamily: 'Inter',)), // Жирное выделение слова "полный"
+                      TextSpan(text: ' доступ\nк банку вакансий и заданий\nна удаленке. С помощью\nприложения MamaKris ты легко\nнайдёшь работу мечты в онлайне.'), // Продолжение текста
+                    ],
+                  ),
+                )
+
+              ),
             ),
 
             SubscriptionOptions(onPriceSelected: _updateSelectedPrice),
@@ -190,11 +198,34 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 minimumSize: Size(double.infinity, 60*VerticalMultiply), // Растягиваем кнопку на всю ширину с высотой 60
                 padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),
               ),
-                onPressed: () {
-                  // Действие при нажатии на кнопку
-                  // ВОТ ТУТ НАДО БУДЕТ ДОБАВЛЯТЬ ОПЛАТУ
-                },
-                child: Text('ПОДПИСАТЬСЯ ЗА $_selectedPrice ₽',
+              onPressed: () async {
+                if (_isAgreed) { // Проверка, выбран ли чекбокс
+                  print('pressed');
+                  String message = await PaymentHelper.makePayment();
+                  print(message); // Вывод результата в консоль или отображение в интерфейсе.
+                } else {
+                  // Показываем сообщение, если чекбокс не выбран
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Внимание!'),
+                        content: const Text('Необходимо согласиться с политикой конфиденциальности и условиями подписки.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Закрытие диалогового окна
+                            },
+                            child: const Text('ОК'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+
+              child: Text('ПОДПИСАТЬСЯ ЗА $_selectedPrice ₽',
                   style: TextStyle(fontSize: 14*TextMultiply, color: const Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700),
                 ),
               ),

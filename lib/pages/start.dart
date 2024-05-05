@@ -11,7 +11,7 @@ import 'package:MamaKris/pages/tinder.dart';
 import 'package:MamaKris/pages/search.dart';
 import 'package:MamaKris/pages/job_create.dart';
 import 'package:MamaKris/pages/employer_list.dart';
-
+import 'package:MamaKris/apple_sign.dart';
 class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,10 @@ class StartPage extends StatelessWidget {
                   ),
                   Padding(
                       padding: EdgeInsets.only(top: 12 * VerticalMultiply), // Общий отступ для группы текстов
-                      child: ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red, // Цвет фона кнопки
                           shape: CircleBorder(), // Форма кнопки - круглая
@@ -185,7 +188,9 @@ class StartPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(builder: (context) => ChoicePage()),
                                   (_) => false,
-                            );                          } else if (isNewUser == false) {
+                            );
+                          }
+                          else if (isNewUser == false) {
                             // Пользователь уже существует, получаем дополнительные данные из Firestore
                             final User? user = FirebaseAuth.instance.currentUser;
                             if (user != null) {
@@ -240,9 +245,96 @@ class StartPage extends StatelessWidget {
                           }
 
                         },
-                      )
+                      ),
 
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // Цвет фона кнопки
+                            shape: CircleBorder(), // Форма кнопки - круглая
+                            padding: EdgeInsets.all(14 * TextMultiply), // Отступ внутри круглой кнопки
+                          ),
+                          child: FaIcon(
+                            FontAwesomeIcons.apple,
+                            color: Colors.white, // Цвет иконки
+                            size: 26 * TextMultiply, // Размер иконки
+                          ),
+                          onPressed: () async {
+                            final bool? isNewUser = await signInWithApple();
+                            if (isNewUser == true) {
+                              // Новый пользователь
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => ChoicePage()),
+                                    (_) => false,
+                              );
+                            } else if (isNewUser == false) {
+                              // Пользователь уже существует
+                              final User? user = FirebaseAuth.instance.currentUser;
+                              if (user != null) {
+                                final uid = user.uid;
+                                final docSnapshot = await FirebaseFirestore.instance.collection('choices').doc(uid).get();
+                                final docSnapshot2 = await FirebaseFirestore.instance.collection('jobSearches').doc(uid).get();
+
+                                if (docSnapshot.exists && docSnapshot.data()!.containsKey('choice')) {
+                                  final choice = docSnapshot.data()!['choice'];
+                                  if (choice == 'ищу работу' && docSnapshot2.exists && docSnapshot2.data()!.containsKey('employerId')) {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => TinderPage()),
+                                          (_) => false,
+                                    );
+                                  } else if (choice == 'ищу работу') {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => JobSearchPage()),
+                                          (_) => false,
+                                    );
+                                  } else if (choice == 'есть вакансии') {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => JobsListPage()),
+                                          (_) => false,
+                                    );
+                                  } else {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ChoicePage()),
+                                          (_) => false,
+                                    );
+                                  }
+                                } else {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ChoicePage()),
+                                        (_) => false,
+                                  );
+                                }
+                              } else {
+                                print('Ошибка: пользователь не определён после входа через Apple.');
+                              }
+                            } else {
+                              print("Ошибка аутентификации или вход отменён пользователем");
+                            }
+                          },
+                        )
+                          ],
+                      ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 7 * VerticalMultiply), // Общий отступ для группы текстов
+                    child: TextButton(
+                      child:  Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Сбросить пароль',
+                          style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: const Color(0xFF343434),decoration: TextDecoration.underline,),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/reset');
+                      },
+                    ),
+                  )
                 ],
               ),
             ),

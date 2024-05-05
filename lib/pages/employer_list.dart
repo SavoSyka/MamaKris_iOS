@@ -112,6 +112,30 @@ class _JobsListPageState extends State<JobsListPage> {
                         borderRadius: BorderRadius.circular(10*TextMultiply),
                       ),
                       color: Color(0xFFFFFFFF),
+                      child: PopupMenuButton<String>(
+                        onSelected: (String value) {
+                        if (value == 'edit') {
+                          _editJob(jobData);
+                        } else if (value == 'delete') {
+                          _deleteJob(job.id);
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'edit',
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text('Редактировать'),
+                          ),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'delete',
+                          child: ListTile(
+                            leading: Icon(Icons.delete),
+                            title: Text('Удалить'),
+                          ),
+                        ),
+                      ],
                       child: Stack(
                         children: [
                           ListTile(
@@ -135,33 +159,11 @@ class _JobsListPageState extends State<JobsListPage> {
                               style: TextStyle(color: statusColor, fontSize: 12 * TextMultiply, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          Positioned(
-                            top: 4*VerticalMultiply,
-                            right: 4*HorizontalMultiply,
-                            child: PopupMenuButton<String>(
-                              onSelected: (String value) {
-                                if (value == 'edit') {
-                                  _editJob(jobData);
-                                } else if (value == 'delete') {
-                                  _deleteJob(job.id);
-                                }
-                              },
-                              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
-                                  value: 'edit',
-                                  child: Text('Редактировать'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: 'delete',
-                                  child: Text('Удалить'),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),
                   ),
+                  )
               );
             },
           );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:MamaKris/icon.dart';
-
+import 'package:MamaKris/pages/details.dart';
 class FavoritePage extends StatefulWidget {
   @override
   _FavoritePageState createState() => _FavoritePageState();
@@ -56,6 +56,11 @@ class _FavoritePageState extends State<FavoritePage> {
       }
     }
     return likedJobs;
+  }
+  void _viewJobDetails(Map<String, dynamic> jobData) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => JobDetailsPage(jobData: jobData)),
+    );
   }
 
   @override
@@ -112,60 +117,64 @@ class _FavoritePageState extends State<FavoritePage> {
                           style:  TextStyle(fontSize: 12*TextMultiply, fontFamily: 'Inter1', fontWeight: FontWeight.w500, color: Color(0xFF343434)),
                           maxLines: 2,
                         ),
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) => FractionallySizedBox(
-                            heightFactor: 0.8, // Высота модального окна как 50% от высоты экрана
-                            child: Container(
-                              padding:  EdgeInsets.all(16*TextMultiply),
-                              // Удалите width, чтобы Container растягивался на всю ширину экрана
-                              width: MediaQuery.of(context).size.width,
-                              decoration:  BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20*TextMultiply),
-                                  topRight: Radius.circular(20*TextMultiply),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                   SizedBox(height: 10*TextMultiply),
-                                  Center( // Добавляем Center для центрирования текста
-                                    child: Text(
-                                      jobData['contactLink'] ?? 'Нет контактов',
-                                      style: const TextStyle(fontSize: 30, fontFamily: 'Inter', fontWeight: FontWeight.w900, color: Color(0xFF343434)),
-                                      textAlign: TextAlign.center, // Центрируем текст внутри Text виджета
-                                    ),
-                                  ),
-                                   SizedBox(height: 20*TextMultiply),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
+                        onTap: () =>_viewJobDetails(jobData),
 
-                                          Text(
 
-                                            jobData['title'] ?? 'Без названия',
-                                            style:  TextStyle(fontSize: 22*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: Color(0xFF343434)),
-                                          ),
-                                          const SizedBox(height: 10),
-
-                                          Text(
-                                            jobData['description'] ?? 'Без описания',
-                                            style:  TextStyle(fontSize: 18*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: Color(0xFF343434)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                      ),),
+                      //       showModalBottomSheet(
+                      //     context: context,
+                      //     isScrollControlled: true,
+                      //     builder: (context) => FractionallySizedBox(
+                      //       heightFactor: 0.8, // Высота модального окна как 50% от высоты экрана
+                      //       child: Container(
+                      //         padding:  EdgeInsets.all(16*TextMultiply),
+                      //         // Удалите width, чтобы Container растягивался на всю ширину экрана
+                      //         width: MediaQuery.of(context).size.width,
+                      //         decoration:  BoxDecoration(
+                      //           color: Colors.white,
+                      //           borderRadius: BorderRadius.only(
+                      //             topLeft: Radius.circular(20*TextMultiply),
+                      //             topRight: Radius.circular(20*TextMultiply),
+                      //           ),
+                      //         ),
+                      //         child: Column(
+                      //           crossAxisAlignment: CrossAxisAlignment.start,
+                      //           children: [
+                      //              SizedBox(height: 10*TextMultiply),
+                      //             Center( // Добавляем Center для центрирования текста
+                      //               child: Text(
+                      //                 jobData['contactLink'] ?? 'Нет контактов',
+                      //                 style: const TextStyle(fontSize: 30, fontFamily: 'Inter', fontWeight: FontWeight.w900, color: Color(0xFF343434)),
+                      //                 textAlign: TextAlign.center, // Центрируем текст внутри Text виджета
+                      //               ),
+                      //             ),
+                      //              SizedBox(height: 20*TextMultiply),
+                      //             Expanded(
+                      //               child: SingleChildScrollView(
+                      //                 child: Column(
+                      //                   crossAxisAlignment: CrossAxisAlignment.start,
+                      //                   children: [
+                      //
+                      //                     Text(
+                      //
+                      //                       jobData['title'] ?? 'Без названия',
+                      //                       style:  TextStyle(fontSize: 22*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: Color(0xFF343434)),
+                      //                     ),
+                      //                     const SizedBox(height: 10),
+                      //
+                      //                     Text(
+                      //                       jobData['description'] ?? 'Без описания',
+                      //                       style:  TextStyle(fontSize: 18*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: Color(0xFF343434)),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      // ),
+                      ),
                     ),
                   ),
                 );

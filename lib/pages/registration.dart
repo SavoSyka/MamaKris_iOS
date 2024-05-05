@@ -176,47 +176,71 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Future<void> _register() async {
-    if (passwordController.text == confirmPasswordController.text) {
-      try {
-        // Регистрация пользователя с помощью email и пароля
-        final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-
-        // Проверка, успешно ли прошла регистрация
-        if (userCredential.user != null) {
-          // Регистрация прошла успешно
-          print('Пользователь успешно зарегистрирован!');
-
-          // Отправка письма с подтверждением на email пользователя
-          await userCredential.user!.sendEmailVerification();
-
-          // Перенаправление пользователя на страницу верификации
-          Navigator.pushReplacementNamed(context, '/verification');
-        } else {
-          // Регистрация не удалась
-          print('Регистрация не удалась.');
-        }
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'email-already-in-use') {
-          // Email уже используется
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Такой пользователь уже зарегистрирован!'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } catch (e) {
-        // Обработка других ошибок
-        print('Ошибка: $e');
-      }
-    } else {
-      // Показать сообщение, если пароли не совпадают
+    if (passwordController.text != confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Пароли не совпадают! Пожалуйста, проверьте введённые пароли.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return; // Выйти из функции, если пароли не совпадают
+    }
+
+    // if (passwordController.text.length < 6) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Пароль слишком короткий! Минимальная длина пароля - 6 символов.'),
+    //       backgroundColor: Colors.red,
+    //     ),
+    //   );
+    //   return; // Выйти из функции, если пароль слишком короткий
+    // }
+
+    try {
+      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      if (userCredential.user != null) {
+        await userCredential.user!.sendEmailVerification();
+        Navigator.pushReplacementNamed(context, '/verification');
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'Произошла ошибка. Пожалуйста, попробуйте ещё раз.';
+
+      switch (e.code) {
+        case 'invalid-email':
+          errorMessage = 'Некорректный адрес электронной почты.';
+          break;
+        case 'weak-password':
+          errorMessage = 'Пароль слишком простой.\nПожалуйста, используйте более сложный пароль.\nМинимальная длина пароля - 6 символов.';
+          break;
+        case 'email-already-in-use':
+          errorMessage = 'Такой пользователь уже зарегистрирован.';
+          break;
+        case 'operation-not-allowed':
+          errorMessage = 'Операция не разрешена. Пожалуйста, свяжитесь с поддержкой.';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Слишком много запросов. Пожалуйста, попробуйте позже.';
+          break;
+        default:
+          print('Необработанная ошибка: ${e.code}');
+          break;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      print('Ошибка: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Непредвиденная ошибка. Пожалуйста, попробуйте ещё раз.'),
           backgroundColor: Colors.red,
         ),
       );
