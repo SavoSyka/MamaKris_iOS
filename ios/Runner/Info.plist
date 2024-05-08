@@ -8,13 +8,18 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-                    <string>com.googleusercontent.apps.860997635421§</string>
+                    <string>com.mama.kris</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.86099763542-lct4h3lht6g3f8r024104lnop1vqhdo2</string>
+				<string>com.googleusercontent.apps.86099763542-k5tad696bladahtro8lfdb1pmati5ohu</string>
 			</array>
 		</dict>
 	</array>
+	<key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
 	<key>GoogleAppID</key>
 	<string>1:86099763542:ios:935986abf5d903f853f6f7</string>
 	<key>GIDClientID</key>

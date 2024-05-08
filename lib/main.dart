@@ -26,11 +26,39 @@ import 'package:MamaKris/pages/test.dart';
 import 'package:MamaKris/pages/update.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:MamaKris/notification.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+Future<void> requestIOSPermissions() async {
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Инициализация локальных уведомлений
+  await initializeLocalNotifications();
+  print('Уведомления успешно инициализированы'); // Сообщение об успехе
+
+  // Запрос разрешений на уведомления для iOS
+  await requestIOSPermissions();
+
+  // Планирование уведомлений
+  await scheduleRepeatingNotification();
+  print('Запланировано тестовое уведомление'); // Сообщение об успехе
+
+
   runApp(MyApp());
 }
+
 
 class LoadingScreen extends StatefulWidget {
   @override

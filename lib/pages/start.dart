@@ -181,7 +181,9 @@ class StartPage extends StatelessWidget {
                           size: 26*TextMultiply, // Размер иконки
                         ),
                         onPressed: () async {
+                          print('pressed');
                           final bool? isNewUser = await signInWithGoogle();
+                          print('func done');
                           if (isNewUser == true) {
                             // Новый пользователь
                             Navigator.pushAndRemoveUntil(

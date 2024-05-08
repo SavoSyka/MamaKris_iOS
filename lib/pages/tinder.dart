@@ -109,30 +109,48 @@ class TinderPageState extends State<TinderPage> {
       final userDoc = await _firestore.collection('jobSearches')
           .doc(user.uid)
           .get();
+
       bool hasSubscription = userDoc.data()?['hasSubscription'] ?? false;
       int viewedAdsCount = userDoc.data()?['viewedAdsCount'] ?? 0;
+      bool openToPermanent = userDoc.data()?['openToPermanent'] ?? false;
+      bool openToTemporary = userDoc.data()?['openToTemporary'] ?? false;
+      String candidateSphere = userDoc.data()?['sphere'] ?? '';
+
 
       if (!hasSubscription && viewedAdsCount >= 3) {
-        print(userDoc.data()?['hasSubscription']);
-        print(userDoc.data()?['employerId']);
-
         // Показываем диалог о необходимости подписки
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => SubscriptionPage()), // Замените SubscribePage() на страницу, на которую хотите перейти
               (_) => false,
         );
-        ();
         return;
       }
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('jobs')
-          .where(
-          'status', isEqualTo: 'approved') // Фильтр по статусу 'approved'
+      // final querySnapshot = await FirebaseFirestore.instance
+      //     .collection('jobs')
+      //     .where('status', isEqualTo: 'approved') // Фильтр по статусу 'approved'
+      //
+      // // .where('jobType', isEqualTo: 'desiredJobType') // Условие для jobType
+      // // .where('sphere', isEqualTo: 'desiredSphere') // Условие для sphere
+      //     .get();
+      //
 
-      // .where('jobType', isEqualTo: 'desiredJobType') // Условие для jobType
-      // .where('sphere', isEqualTo: 'desiredSphere') // Условие для sphere
-          .get();
+      Query query = _firestore.collection('jobs').where('status', isEqualTo: 'approved');
+
+      // Примените фильтры в зависимости от параметров пользователя
+      if (openToPermanent && openToTemporary) {
+        // Если открыты для обоих типов, ничего не фильтруем
+      } else if (openToPermanent) {
+        query = query.where('jobType', isEqualTo: 'const');
+      } else if (openToTemporary) {
+        query = query.where('jobType', isEqualTo: 'once');
+      }
+
+      if (candidateSphere != "Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка") {
+        query = query.where('sphere', isEqualTo: candidateSphere);
+      }
+      final querySnapshot = await query.get();
+
 
       final allJobsIds = querySnapshot.docs.map((doc) => doc.id).toList();
       final unviewedJobsIds = allJobsIds.where((id) =>

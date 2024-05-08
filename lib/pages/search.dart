@@ -43,6 +43,12 @@ class _JobSearchPageState extends State<JobSearchPage> {
   }
 
   void _saveJobSearch() async {
+    if (!_openToPermanent && !_openToTemporary) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Пожалуйста, выберите хотя бы один формат сотрудничества.')),
+      );
+      return;
+    }
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -251,7 +257,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
             ),
               _buildDropdownField(
                   _sphere,
-                  ["Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка.",
+                  ["Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка",
                     "Дизайн",
                     "Разработка и IT",
                     "Тексты и переводы",
