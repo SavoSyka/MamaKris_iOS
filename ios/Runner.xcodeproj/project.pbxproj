@@ -11,8 +11,20 @@
 		2223E7BC8E058F8F08854315 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 184E1789F95FBD2F2590D5BD /* Pods_Runner.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		63191D992BE29CBB00187CEB /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63191D982BE29CBB00187CEB /* PaymentManager.swift */; };
 		632888732BDB16BE009CE3D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 632888722BDB16BD009CE3D0 /* GoogleService-Info.plist */; };
+		63A382ED2BED3EBE0095D8AE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382C42BED3EBE0095D8AE /* BaseViewController.swift */; };
+		63A382F22BED3EBE0095D8AE /* DemoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382CA2BED3EBE0095D8AE /* DemoViewCell.swift */; };
+		63A382F32BED3EBE0095D8AE /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382CC2BED3EBE0095D8AE /* DemoViewController.swift */; };
+		63A382F42BED3EBE0095D8AE /* TestSinglePaymentMethodsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382CD2BED3EBE0095D8AE /* TestSinglePaymentMethodsController.swift */; };
+		63A382F52BED3EBE0095D8AE /* FooterActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382CF2BED3EBE0095D8AE /* FooterActionView.swift */; };
+		63A382F62BED3EBE0095D8AE /* FooterActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63A382D02BED3EBE0095D8AE /* FooterActionView.xib */; };
+		63A382F72BED3EBE0095D8AE /* LogoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382D22BED3EBE0095D8AE /* LogoHeaderView.swift */; };
+		63A382F82BED3EBE0095D8AE /* LogoHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63A382D32BED3EBE0095D8AE /* LogoHeaderView.xib */; };
+		63A382F92BED3EBE0095D8AE /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382D62BED3EBE0095D8AE /* UITextField.swift */; };
+		63A382FA2BED3EBE0095D8AE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382D72BED3EBE0095D8AE /* UIView.swift */; };
+		63A382FB2BED3EBE0095D8AE /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382D82BED3EBE0095D8AE /* UIViewController.swift */; };
+		63A382FC2BED3EBE0095D8AE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382DA2BED3EBE0095D8AE /* Constants.swift */; };
+		63A382FD2BED3EBE0095D8AE /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A382DC2BED3EBE0095D8AE /* PaymentViewModel.swift */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		76FB455EC32AA6ADD65D9E8E /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E0B78AA6049F8148C1FB4D /* Pods_RunnerTests.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -52,8 +64,20 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		63191D982BE29CBB00187CEB /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManager.swift; sourceTree = "<group>"; };
 		632888722BDB16BD009CE3D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63A382C42BED3EBE0095D8AE /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		63A382CA2BED3EBE0095D8AE /* DemoViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewCell.swift; sourceTree = "<group>"; };
+		63A382CC2BED3EBE0095D8AE /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		63A382CD2BED3EBE0095D8AE /* TestSinglePaymentMethodsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSinglePaymentMethodsController.swift; sourceTree = "<group>"; };
+		63A382CF2BED3EBE0095D8AE /* FooterActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooterActionView.swift; sourceTree = "<group>"; };
+		63A382D02BED3EBE0095D8AE /* FooterActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterActionView.xib; sourceTree = "<group>"; };
+		63A382D22BED3EBE0095D8AE /* LogoHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoHeaderView.swift; sourceTree = "<group>"; };
+		63A382D32BED3EBE0095D8AE /* LogoHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoHeaderView.xib; sourceTree = "<group>"; };
+		63A382D62BED3EBE0095D8AE /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		63A382D72BED3EBE0095D8AE /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		63A382D82BED3EBE0095D8AE /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		63A382DA2BED3EBE0095D8AE /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		63A382DC2BED3EBE0095D8AE /* PaymentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
 		63D101F82BC73AF300CB0FB2 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		653221663849B4FAA34954AE /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		65C4DABC8589DB9AFA09C663 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +124,106 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
+		63A382C92BED3EBE0095D8AE /* BaseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				63A382C42BED3EBE0095D8AE /* BaseViewController.swift */,
+			);
+			path = BaseViewController;
+			sourceTree = "<group>";
+		};
+		63A382CB2BED3EBE0095D8AE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				63A382CA2BED3EBE0095D8AE /* DemoViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		63A382CE2BED3EBE0095D8AE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				63A382CB2BED3EBE0095D8AE /* Cells */,
+				63A382CC2BED3EBE0095D8AE /* DemoViewController.swift */,
+				63A382CD2BED3EBE0095D8AE /* TestSinglePaymentMethodsController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		63A382D12BED3EBE0095D8AE /* FooterActionView */ = {
+			isa = PBXGroup;
+			children = (
+				63A382CF2BED3EBE0095D8AE /* FooterActionView.swift */,
+				63A382D02BED3EBE0095D8AE /* FooterActionView.xib */,
+			);
+			path = FooterActionView;
+			sourceTree = "<group>";
+		};
+		63A382D42BED3EBE0095D8AE /* LogoHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				63A382D22BED3EBE0095D8AE /* LogoHeaderView.swift */,
+				63A382D32BED3EBE0095D8AE /* LogoHeaderView.xib */,
+			);
+			path = LogoHeaderView;
+			sourceTree = "<group>";
+		};
+		63A382D52BED3EBE0095D8AE /* DemoModule */ = {
+			isa = PBXGroup;
+			children = (
+				63A382CE2BED3EBE0095D8AE /* Controllers */,
+				63A382D12BED3EBE0095D8AE /* FooterActionView */,
+				63A382D42BED3EBE0095D8AE /* LogoHeaderView */,
+			);
+			path = DemoModule;
+			sourceTree = "<group>";
+		};
+		63A382D92BED3EBE0095D8AE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				63A382D62BED3EBE0095D8AE /* UITextField.swift */,
+				63A382D72BED3EBE0095D8AE /* UIView.swift */,
+				63A382D82BED3EBE0095D8AE /* UIViewController.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		63A382DB2BED3EBE0095D8AE /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				63A382DA2BED3EBE0095D8AE /* Constants.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		63A382DD2BED3EBE0095D8AE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				63A382DC2BED3EBE0095D8AE /* PaymentViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		63A382DE2BED3EBE0095D8AE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				63A382C92BED3EBE0095D8AE /* BaseViewController */,
+				63A382D52BED3EBE0095D8AE /* DemoModule */,
+				63A382D92BED3EBE0095D8AE /* Extensions */,
+				63A382DB2BED3EBE0095D8AE /* Support */,
+				63A382DD2BED3EBE0095D8AE /* ViewModel */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		63A382E22BED3EBE0095D8AE /* demo */ = {
+			isa = PBXGroup;
+			children = (
+				63A382DE2BED3EBE0095D8AE /* Sources */,
+			);
+			path = demo;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +260,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				63A382E22BED3EBE0095D8AE /* demo */,
 				63D101F82BC73AF300CB0FB2 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -145,7 +270,6 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				63191D982BE29CBB00187CEB /* PaymentManager.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -268,6 +392,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63A382F82BED3EBE0095D8AE /* LogoHeaderView.xib in Resources */,
+				63A382F62BED3EBE0095D8AE /* FooterActionView.xib in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				632888732BDB16BE009CE3D0 /* GoogleService-Info.plist in Resources */,
@@ -403,9 +529,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63191D992BE29CBB00187CEB /* PaymentManager.swift in Sources */,
+				63A382FA2BED3EBE0095D8AE /* UIView.swift in Sources */,
+				63A382FC2BED3EBE0095D8AE /* Constants.swift in Sources */,
+				63A382F52BED3EBE0095D8AE /* FooterActionView.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				63A382F22BED3EBE0095D8AE /* DemoViewCell.swift in Sources */,
+				63A382F72BED3EBE0095D8AE /* LogoHeaderView.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				63A382F92BED3EBE0095D8AE /* UITextField.swift in Sources */,
+				63A382F32BED3EBE0095D8AE /* DemoViewController.swift in Sources */,
+				63A382FB2BED3EBE0095D8AE /* UIViewController.swift in Sources */,
+				63A382ED2BED3EBE0095D8AE /* BaseViewController.swift in Sources */,
+				63A382FD2BED3EBE0095D8AE /* PaymentViewModel.swift in Sources */,
+				63A382F42BED3EBE0095D8AE /* TestSinglePaymentMethodsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

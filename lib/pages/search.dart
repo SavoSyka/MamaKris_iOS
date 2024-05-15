@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:MamaKris/wave.dart';
 import 'package:MamaKris/pages/tinder.dart';
+import 'package:flutter/gestures.dart';
+import 'package:MamaKris/pages/conf.dart';
 
 class JobSearchPage extends StatefulWidget {
   final Map<String, dynamic>? jobSearchData;
@@ -16,7 +18,8 @@ class JobSearchPage extends StatefulWidget {
 }
 
 class _JobSearchPageState extends State<JobSearchPage> {
-
+  bool _isAgreed = false;
+  bool _isAgreed2 = false;
   final CollectionReference collection = FirebaseFirestore.instance.collection('jobSearches');
   final _formKey = GlobalKey<FormState>();
   bool _openToPermanent = false;
@@ -39,10 +42,14 @@ class _JobSearchPageState extends State<JobSearchPage> {
       _phoneController.text = widget.jobSearchData!['phone'] ?? '';
       _viewedAdsCount = widget.jobSearchData!['viewedAdsCount'] ?? 0;
       _hasSubscription = widget.jobSearchData!['hasSubscription'] ?? true;//TODO: после добавления оплатьы поменять на false
+      _isAgreed = widget.jobSearchData!['isAgreed'] ?? false;
+      _isAgreed2 = widget.jobSearchData!['isAgreed'] ?? false;
+
     }
   }
 
   void _saveJobSearch() async {
+    print('begin_save');
     if (!_openToPermanent && !_openToTemporary) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Пожалуйста, выберите хотя бы один формат сотрудничества.')),
@@ -70,6 +77,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
         'viewedAdsCount': _viewedAdsCount,
         'hasSubscription': _hasSubscription,
         'phone': _phoneController.text,
+        'isAgreed': _isAgreed2,
       };
 
       try {
@@ -301,7 +309,63 @@ class _JobSearchPageState extends State<JobSearchPage> {
               ),
             ),
             _buildTextField(_phoneController, 'Телефон', false, (371+128)*VerticalMultiply, 32*HorizontalMultiply, 295*HorizontalMultiply, 60*VerticalMultiply, 1, 15),
+          Visibility(
+            visible: !_isAgreed,
+            replacement: Container(), // Показываем, если _isAgreed == false
+            child:
+            Padding(
+              padding: EdgeInsets.only(left: 46*HorizontalMultiply, top: 646*VerticalMultiply , right:0, bottom:0),
+              child:Align(
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                   Checkbox(
+                        value: _isAgreed2,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isAgreed2 = value!;
+                          });
+                        },
 
+                        checkColor: Colors.white, // Цвет галочки
+                        activeColor: const Color(0xFF93D56F),
+
+                        // side: MaterialStateBorderSide.resolveWith( // Определяем цвет и ширину границы
+                        //       (states) => BorderSide(
+                        //     color: Color(0xFF343434), // Цвет рамки
+                        //     width: 2*TextMultiply, // Ширина рамки
+                        //   ),
+                        // ),
+                    ),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: const Color(0xFF343434),),
+                          children: <TextSpan>[
+                            TextSpan(text: 'Согласен с ',
+                              style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: const Color(0xFF343434),),
+                            ),
+                            TextSpan(
+                              text: 'Политикой конфиденциальности',
+                              style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: const Color(0xFF343434),decoration: TextDecoration.underline,),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                                  );
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+          ),
             Padding(
             padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 708*VerticalMultiply, right: 32*HorizontalMultiply, bottom:32*VerticalMultiply), // Общий отступ для группы текстов
             child: Container(
@@ -323,7 +387,36 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   minimumSize: Size(double.infinity, 60*VerticalMultiply), // Растягиваем кнопку на всю ширину с высотой 60
                   padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),
                 ),
-                    onPressed: _saveJobSearch,
+                    onPressed: () async {
+                  print(_isAgreed2);
+                  print(_isAgreed);
+
+                  if (_isAgreed2){
+                    print('gere');
+                    //_isAgreed = _isAgreed2;
+                    _saveJobSearch();
+                    }
+                  else {
+                    // Показываем сообщение, если чекбокс не выбран
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Внимание!'),
+                          content: const Text('Необходимо согласиться с политикой конфиденциальности'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Закрытие диалогового окна
+                              },
+                              child: const Text('ОК'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                    },
                       child:  Text('РАЗМЕСТИТЬ',
                           style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700)
                       ),
