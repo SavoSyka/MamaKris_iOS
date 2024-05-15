@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:MamaKris/icon.dart';
+import 'package:MamaKris/pages/conf.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:MamaKris/pages/employer_list.dart';
 
 class SupportEmplPage extends StatefulWidget {
   @override
@@ -22,13 +26,16 @@ class _SupportEmplPageState extends State<SupportEmplPage> {
 
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/empl_list');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => JobsListPage()),
+              (_) => false,
+        );
         break;
       case 1:
-        Navigator.pushNamed(context, '/profile_empl');
+        Navigator.pushReplacementNamed(context, '/profile_empl');
         break;
       case 2:
-        Navigator.pushNamed(context, '/support_empl');
         break;
     }
   }
@@ -37,32 +44,72 @@ class _SupportEmplPageState extends State<SupportEmplPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Support'),
+        backgroundColor: const Color(0xFFF0ECD3),
+
+        title: const Text('Поддержка',
+          style: TextStyle(fontSize: 25, fontFamily: 'Inter', fontWeight: FontWeight.w800, color: Color(0xFF343434)),
+        ),
       ),
-      body: Center(
-        // Отображение виджета, соответствующего текущему выбранному элементу
-        child: _widgetOptions.elementAt(_selectedIndex),
+      backgroundColor: const Color(0xFFF0ECD3),
+
+      body: ListView(
+        children: [
+          Card(
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: ListTile(
+              title: const Text('Поддержка.\nНапишите нам, если у Вас остались вопросы, замечания, предложения.'),
+              trailing: const Icon(Icons.send),
+              onTap: () => _launchURL('https://t.me/MamaKris_support_bot?start=help'),
+                // Код для перехода в Telegram бота
+
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: ListTile(
+              title: const Text('Политика конфиденциальности'),
+              //trailing: const Icon(Icons.send),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_sharp),
+            icon: SvgIcon('images/icons/main.svg'),
             label: 'Главная',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
+            icon: SvgIcon('images/icons/profile.svg'),
             label: 'Профиль',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: DoubleIcon(
+              bottomIconAsset: 'images/icons/support-bg.svg',
+              topIconAsset: 'images/icons/support.svg',
+            ),
             label: 'Поддержка',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF93D56F),
-        unselectedItemColor: Colors.grey, // Цвет неактивных элементов
+        selectedItemColor: Colors.black, // Цвет выбранного элемента
+        unselectedItemColor: Colors.black, // Цвет не выбранного элемента
         onTap: _onItemTapped,
       ),
     );
+  }
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Не удалось открыть $url';
+    }
   }
 }
