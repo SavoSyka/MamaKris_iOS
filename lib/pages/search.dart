@@ -24,7 +24,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
   final _formKey = GlobalKey<FormState>();
   bool _openToPermanent = false;
   bool _openToTemporary = false;
-  String _sphere = 'Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка.';
+  String _sphere = 'Все вакансии интересны, так как только изучаю рынок онлайна и первый раз смотрю в сторону онлайн заработка';
   final TextEditingController _phoneController = TextEditingController();
   int _viewedAdsCount = 0;
   bool _hasSubscription = true;//TODO: после добавления оплатьы поменять на false
@@ -171,17 +171,24 @@ class _JobSearchPageState extends State<JobSearchPage> {
           children: [
             SineWaveWidget( verticalOffset: 128*VerticalMultiply),
 
-          Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
-            padding: EdgeInsets.only(
-                left: 5.0*HorizontalMultiply, top: 35*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
-            child:IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 5.0*HorizontalMultiply, top: 35*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
+              child:IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  // Проверка стэка навигации
+                  if (Navigator.of(context).canPop()) {
+                    // Переход на предыдущую страницу
+                    Navigator.maybePop(context);
+                  } else {
+                    // Переход на определенную страницу, если стэк пуст
+                    Navigator.pushReplacementNamed(context, '/welcome');
+                  }
+                },
+              ),
             ),
-          ),
-            Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+            Padding(
               padding: EdgeInsets.only(
                   left: 32.0*HorizontalMultiply, top: (30+128)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
               child: Text(
@@ -190,7 +197,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 style: TextStyle(fontSize: 32*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w700, color: Color(0xFF343434)),
               ),
             ),
-            Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+            Padding(
               padding: EdgeInsets.only(
                   left: 32.0*HorizontalMultiply, top: (30+128+32)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
               child: Text(
@@ -199,7 +206,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 style: TextStyle(fontSize: 32*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w700, color: Color(0xFF343434)),
               ),
             ),
-            Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+            Padding(
               padding: EdgeInsets.only(
                   left: 32.0*HorizontalMultiply, top: (30+128+32*2)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
               child: Text(
@@ -208,7 +215,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 style: TextStyle(fontSize: 32*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w700, color: Color(0xFF343434)),
               ),
             ),
-            Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+            Padding(
               padding: EdgeInsets.only(
                   left: 32.0*HorizontalMultiply, top: (156+128)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
               child: Text(
@@ -217,7 +224,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 style: TextStyle(fontSize: 13*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w600, color: Color(0xFF343434)),
               ),
             ),
-            Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+            Padding(
               padding: EdgeInsets.only(
                   left: 10.0*HorizontalMultiply, top: (170+128)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
               child: CheckboxListTile(
@@ -235,7 +242,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 checkColor: Colors.white, // Цвет галочки в чекбоксе
               ),
             ),
-          Padding( // Позиционируем кнопку "Ищу работу" на верху экрана
+          Padding(
             padding: EdgeInsets.only(
                 left: 10.0*HorizontalMultiply, top: (198+128)*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
             child: CheckboxListTile(
@@ -392,7 +399,6 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   print(_isAgreed);
 
                   if (_isAgreed2){
-                    print('gere');
                     //_isAgreed = _isAgreed2;
                     _saveJobSearch();
                     }

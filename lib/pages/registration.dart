@@ -204,7 +204,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
       if (userCredential.user != null) {
         await userCredential.user!.sendEmailVerification();
-        Navigator.pushReplacementNamed(context, '/verification');
+        Navigator.pushNamed(context, '/verification');
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'Произошла ошибка. Пожалуйста, попробуйте ещё раз.';

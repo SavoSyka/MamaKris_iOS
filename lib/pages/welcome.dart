@@ -54,16 +54,19 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 5.0*HorizontalMultiply, top: 35*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
-                child:IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
+
+              // кнопка назад теперь не нужна, т.к. страница первая
+
+              // Padding(
+              //   padding: EdgeInsets.only(
+              //       left: 5.0*HorizontalMultiply, top: 35*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
+              //   child:IconButton(
+              //     icon: Icon(Icons.arrow_back),
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //   ),
+              // ),
 
               Align(
                 alignment: Alignment.centerLeft,
@@ -154,7 +157,7 @@ class WelcomePage extends StatelessWidget {
 
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/registration');
+                      Navigator.pushNamed(context, '/start');
                     },
                     child: const Text(
                       'ПРОДОЛЖИТЬ',
@@ -165,27 +168,27 @@ class WelcomePage extends StatelessWidget {
               ),
 
 
-              Padding(
-                padding:  EdgeInsets.only(
-                    left: 32.0*HorizontalMultiply, top: 708*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFB7B39A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12*TextMultiply), // Скругление углов
-                    ),
-                    // Задание минимальной ширины кнопки, double.infinity заставляет кнопку растянуться
-                    minimumSize: Size(double.infinity, 60*VerticalMultiply), // Растягиваем кнопку на всю ширину с высотой 60
-                    padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),              ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                      'НАЗАД',
-                      style: TextStyle(fontSize: 14, color: Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700)
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding:  EdgeInsets.only(
+              //       left: 32.0*HorizontalMultiply, top: 708*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Color(0xFFB7B39A),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(12*TextMultiply), // Скругление углов
+              //       ),
+              //       // Задание минимальной ширины кнопки, double.infinity заставляет кнопку растянуться
+              //       minimumSize: Size(double.infinity, 60*VerticalMultiply), // Растягиваем кнопку на всю ширину с высотой 60
+              //       padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),              ),
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     child: Text(
+              //         'НАЗАД',
+              //         style: TextStyle(fontSize: 14, color: Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700)
+              //     ),
+              //   ),
+              // ),
 
             ],
           ),

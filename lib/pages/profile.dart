@@ -98,11 +98,21 @@ class _ProfilePageState extends State<ProfilePage> {
     padding: EdgeInsets.only(top: 48*VerticalMultiply),
     child: SvgPicture .asset(
     'images/logo_named.svg',
-    width: 200*HorizontalMultiply, // Ширина в пикселях
-    height: 200*VerticalMultiply, // Высота в пикселях
+    width: 180*HorizontalMultiply, // Ширина в пикселях
+    height: 180*VerticalMultiply, // Высота в пикселях
     ),
     ),
     ),
+          Padding(
+            padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 240*VerticalMultiply, right:32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
+            child:  Align(
+              alignment: Alignment.center,
+              child:
+              Text('Роль соискателя', style: TextStyle(fontSize: 20*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w700, color: const Color(0xFF343434), height: 1,),
+              ),
+            ),
+          ),
+
           Padding(
             padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 310*VerticalMultiply, right:32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
             child:  Align(
@@ -256,7 +266,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               onPressed: () {
-                deleteUser(context);
+                showDialog(
+                  context: context,
+                  builder: (context) => _buildAlertDialog(),
+                );
+                // deleteUser(context);
               },
             ),
           ),
@@ -298,6 +312,43 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  AlertDialog _buildAlertDialog() {
+    Size screenSize = MediaQuery.of(context).size;
+    double width = screenSize.width;
+    double height = screenSize.height;
+    double TextMultiply = min(width/360, height/800);
+    double VerticalMultiply = height/800;
+    double HorizontalMultiply = width/360;
+    return AlertDialog(
+      title: Text('Вы действительно хотите удалить свой аккаунт?',
+          style: TextStyle(fontSize: 20*TextMultiply, color: Color(0xFF343434), fontFamily: 'Inter', fontWeight: FontWeight.w600)
+      ),
+      content: Text('Удаление аккаунта является необратимым. Все ваши данные будут безвозвратно удалены. Вы уверены, что хотите продолжить?',
+          style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFF343434), fontFamily: 'Inter1', fontWeight: FontWeight.w500)
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Отмена',
+              style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFF343434), fontFamily: 'Inter1', fontWeight: FontWeight.w500)
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text('Удалить',
+              style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFFF55567), fontFamily: 'Inter1', fontWeight: FontWeight.w500)
+          ),
+          onPressed: () {
+            deleteUser(context);
+          Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+
   final CollectionReference collection = FirebaseFirestore.instance.collection(
       'choices');
   void updateRole(BuildContext context) async {
@@ -323,9 +374,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     collection.doc(uid).set({'choice': newRole}, SetOptions(merge: true))
         .then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Роль успешно изменена на: $newRole'))
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('Роль успешно изменена на: $newRole'))
+      // );
       // Добавляем навигацию на новую страницу в зависимости от новой роли
       if (newRole == 'ищу работу') {
         Navigator.pushAndRemoveUntil(
