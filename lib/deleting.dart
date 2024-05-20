@@ -2,6 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MamaKris/pages/start.dart';
 
+
+
+
+
 void deleteUser(BuildContext context) async {
   try {
     await FirebaseAuth.instance.currentUser!.delete();

@@ -200,7 +200,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ),
               onPressed: () async {
                 if (_isAgreed) { // Проверка, выбран ли чекбокс
-                  print('pressed');
                   String message = await PaymentHelper.makePayment();
                   print(message); // Вывод результата в консоль или отображение в интерфейсе.
                 } else {

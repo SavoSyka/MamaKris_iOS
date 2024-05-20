@@ -66,8 +66,8 @@ class _ProfileEmplPageState extends State<ProfileEmplPage> {
                         padding: EdgeInsets.only(top: 48*VerticalMultiply),
                         child: SvgPicture .asset(
                           'images/logo_named.svg',
-                          width: 200*HorizontalMultiply, // Ширина в пикселях
-                          height: 200*VerticalMultiply, // Высота в пикселях
+                          width: 180*HorizontalMultiply, // Ширина в пикселях
+                          height: 180*VerticalMultiply, // Высота в пикселях
                         ),
                       ),
                     ),
@@ -81,6 +81,16 @@ class _ProfileEmplPageState extends State<ProfileEmplPage> {
                     //     },
                     //   ),
                     // ),    Я убрал эту стрелку назад потому что при смене роли мы чистим стэк страниц и это дает возможность полностью все убить под чистую очистив стэк
+
+                    Padding(
+                      padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 240*VerticalMultiply, right:32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
+                      child:  Align(
+                        alignment: Alignment.center,
+                        child:
+                        Text('Роль работодателя', style: TextStyle(fontSize: 20*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w700, color: const Color(0xFF343434), height: 1,),
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 310*VerticalMultiply, right:32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
                       child:  Align(
@@ -265,10 +275,10 @@ class _ProfileEmplPageState extends State<ProfileEmplPage> {
 
     collection.doc(uid).set({'choice': newRole}, SetOptions(merge: true))
         .then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Роль успешно изменена на: $newRole'))
-      );
-      // Добавляем навигацию на новую страницу в зависимости от новой роли
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('Роль успешно изменена на: $newRole'))
+      // );
+      // // Добавляем навигацию на новую страницу в зависимости от новой роли
       if (newRole == 'ищу работу') {        // работодатель --> работник
         if (jobSnapshot.exists) {
           Navigator.pushAndRemoveUntil(

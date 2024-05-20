@@ -10,7 +10,7 @@ Future<String> getInitialRoute() async {
 
   if (user == null) {
     // Пользователь не вошел
-    return '/start';
+    return '/welcome';
   } else {
     // Проверяем, вошел ли пользователь через Google
     bool isGoogleUser = user.providerData.any((provider) => provider.providerId == 'google.com');

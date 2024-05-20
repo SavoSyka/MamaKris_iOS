@@ -109,7 +109,7 @@ class StartPage extends StatelessWidget {
                                 padding: EdgeInsets.only(top: 23*VerticalMultiply, bottom:23*VerticalMultiply),
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, '/welcome');
+                                Navigator.pushNamed(context, '/registration');
                               },
                               child:  Align(
                                 alignment: Alignment.center,

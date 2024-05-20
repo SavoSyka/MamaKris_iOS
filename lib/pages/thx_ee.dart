@@ -44,11 +44,21 @@ class _ThxPageState extends State<ThxPage> {
                     child: SvgPicture .asset(
                       'images/thx_ee.svg',
                       width: 296*HorizontalMultiply, // Ширина в пикселях
-                      height: 92*VerticalMultiply, // Высота в пикселях
+                      height: 136*VerticalMultiply, // Высота в пикселях
                     ),
                   ),
 
                 ),
+                // Padding(
+                //   padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 200*VerticalMultiply, right:0, bottom:0), // Общий отступ для группы текстов
+                //   child:  Align(
+                //     alignment: Alignment.center,
+                //     child: Text(
+                //       'Заявка на поиск удаленной работы успешно размещена. Мы подобрали для Вас самые подходящие предложения по работе. ',
+                //       style: TextStyle(fontSize: 14*TextMultiply, fontFamily: 'Inter', fontWeight: FontWeight.w500, color: const Color(0xFF343434), height: 1,),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 676*VerticalMultiply, right: 32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
                   child: ElevatedButton(
@@ -62,7 +72,7 @@ class _ThxPageState extends State<ThxPage> {
                     child:  Align(
                       alignment: Alignment.center,
                       child: Text(
-                          'НА ГЛАВНУЮ',
+                          'СМОТРЕТЬ ВАКАНСИИ',
                           style: TextStyle(fontSize: 14*TextMultiply, color: Color(0xFFFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w700)
                       ),
                     ),

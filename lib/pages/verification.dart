@@ -64,6 +64,17 @@ class _VerificationPageState extends State<VerificationPage> {
                 // Условие для отображения сообщения и кнопки
                 if (!user.emailVerified) ...[
                   Padding(
+                    padding: EdgeInsets.only(
+                        left: 5.0*HorizontalMultiply, top: 35*VerticalMultiply, right: 32.0*HorizontalMultiply, bottom: 0.0),
+                    child:IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+
+                  Padding(
                     padding:  EdgeInsets.only(left: 32*HorizontalMultiply, top: 530*VerticalMultiply, right:32*HorizontalMultiply, bottom:0), // Общий отступ для группы текстов
                     child:  Align(
                       alignment: Alignment.centerLeft,
